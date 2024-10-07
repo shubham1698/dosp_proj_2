@@ -83,6 +83,7 @@ actor Main
     end
 
   fun ref build_3d_topology() ? =>
+    sys.out.print("Building 3D Topology...")
     let side = (numNodes.f64().pow(1.0 / 3.0)).round().usize()
     for i in Range(0, numNodes) do
       let x = i % side
@@ -97,6 +98,7 @@ actor Main
     end
   
   fun ref build_imp_3d_topology() ? =>
+    sys.out.print("Building Imperfect 3D Topology...")
     let side = (numNodes.f64().pow(1.0 / 3.0)).round().usize()
     for i in Range(0, numNodes) do
       let x = i % side
