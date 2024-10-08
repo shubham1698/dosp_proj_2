@@ -6,7 +6,6 @@ actor Main
   var actors: Array[Worker tag]
   var converged_actors: Array[Bool]
   var converged_count: USize = 0
-  var has_converged: Bool = false // Flag to track if convergence is reached
   var numNodes:USize = 0
   var topology:String = ""
   var algorithm:String = ""
@@ -211,7 +210,7 @@ actor Worker
   var s: F64 = 0.0
   var w: F64 = 1.0
   var push_sum_count: USize = 0
-  var new_ratio:F64=0.0
+
   new create(env':Env,id_param: USize, algorithm_param: String, main_param: Main tag) =>
     env=env'
     worker_id = id_param
@@ -226,7 +225,6 @@ actor Worker
   be spread_rumor() =>
     try
         if not converged then
-
           rumor_count = rumor_count + 1
           let random_neighbor_node=neighbors((_rand.int(neighbors.size().u64())).usize())?
           random_neighbor_node.spread_rumor()
@@ -247,7 +245,7 @@ actor Worker
     env.out.print("Worker Id"+worker_id.string())
   
   be getFinalConverge()=>
-    env.out.print("Worker Converg  "+worker_id.string()+"  "+new_ratio.string())
+    env.out.print("Worker Converg  "+worker_id.string()+"  "+(s/w).string())
   
   be _push_sum() =>
     if not converged then
@@ -258,7 +256,7 @@ actor Worker
       s = total_s
       w = total_w
       
-      new_ratio = s / w
+      let new_ratio = s / w
       //env.out.print("Push Sum workerid "+worker_id.string()+" oldratio "+old_ratio.string()+" New ratio "+new_ratio.string())
       if (old_ratio - new_ratio).abs() < 1e-10 then  // Relaxed threshold
         push_sum_count = push_sum_count + 1
@@ -269,6 +267,7 @@ actor Worker
       let neighbor = try neighbors((_rand.int(neighbors.size().u64())).usize())? else return end
       neighbor.receive_push_sum(total_s, total_w)
       if push_sum_count >= 3 then
+        //env.out.print("Push Sum workerid "+worker_id.string()+" ratio "+(new_ratio).string())
         main_ref.worker_converged(worker_id)
       end
     end
