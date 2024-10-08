@@ -23,10 +23,10 @@ Largest Network Tested:
 -----------------------
 
 -   **Line Topology**:
-    -   **Gossip**: Successfully tested with up to **3000 nodes**.
-    -   **Push-Sum**: Tested with up to **3000 nodes**, but the convergence time was notably higher due to the sequential nature of communication.
+    -   **Gossip**: Successfully tested with up to **15000 nodes**.
+    -   **Push-Sum**: Tested with up to **3000 nodes**.
 -   **3D Topology**:
-    -   **Gossip**: Managed up to **800 nodes** with efficient convergence times.
+    -   **Gossip**: Managed up to **15000 nodes** with efficient convergence times.
     -   **Push-Sum**: Successfully tested up to **800 nodes**, with performance comparable to gossip for smaller networks but increasing times for larger ones.
 -   **Imperfect 3D Topology**:
     -   **Gossip**: Managed up to **800 nodes** with relatively quick convergence.
